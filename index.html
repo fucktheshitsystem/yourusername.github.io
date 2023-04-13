@@ -1,30 +1,77 @@
 <!DOCTYPE html>
-<html lang="en">
-     <link rel="stylesheet" href="styles.css">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>puki.andrick</title>
-    <link rel="stylesheet" href="style.css">
+	<title>Rent Apartment</title>
 </head>
-
-<style>
-    body {text-align:center}
-</style>
 <body>
-    <div id="div1">
-    <label id="who">Who are you?</label><br>
-    <input type="text" id="textbox"><br>
-    <label id="lengthcheck"></label><br>
-    <button type="button" id="submit">Submit</button>
-    </div>
+	<header>
+		<h1>Rent Apartment</h1>
+	</header>
+	<main>
+		<form id="rent-form">
+			<label for="name">Name:</label>
+			<input type="text" id="name" name="name"><br>
 
-    <p id="Title"></p>
-    <p id="Body"></p>
-    <p id="Time"></p> 
-    <a href=https://www.youtube.com><button id="tab1">Home</button></a>
-    <a href=https://www.rappler.com><button id="tab2">News</button></a>
-    <script src="index.js"></script> 
+			<label for="email">Email:</label>
+			<input type="email" id="email" name="email"><br>
+
+			<label for="phone">Phone:</label>
+			<input type="tel" id="phone" name="phone"><br>
+
+			<label for="apartment">Apartment:</label>
+			<select id="apartment" name="apartment">
+				<option value="1">Apartment 1</option>
+				<option value="2">Apartment 2</option>
+				<option value="3">Apartment 3</option>
+			</select><br>
+
+			<label for="start-date">Start Date:</label>
+			<input type="date" id="start-date" name="start-date"><br>
+
+			<label for="end-date">End Date:</label>
+			<input type="date" id="end-date" name="end-date"><br>
+
+			<button type="submit">Submit</button>
+		</form>
+	</main>
+	<footer>
+		<p>&copy; Rent Apartment</p>
+	</footer>
 </body>
 </html>
+John Derrick
+De Luna John Derrick
+// Get the form element and attach a submit event listener
+const rentForm = document.getElementById('rent-form');
+rentForm.addEventListener('submit', function(event) {
+	// Prevent the default form submission behavior
+	event.preventDefault();
+
+	// Get the form data and format it as a query string
+	const formData = new FormData(rentForm);
+	const formDataString = new URLSearchParams(formData).toString();
+
+	// Send a POST request to the server with the form data
+	fetch('/rent', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded'
+		},
+		body: formDataString
+	})
+	.then(response => {
+		if (response.ok) {
+			// If the server responds with a 200 OK status code,
+			// display a success message to the user
+			alert('Your rental request has been sent.');
+		} else {
+			// If the server responds with an error status code,
+			// display an error message to the user
+			alert('There was an error sending your rental request.');
+		}
+	})
+	.catch(error => {
+		// If there is a network error, display an error message to the user
+		alert('There was a network error sending your rental request.');
+	});
+});
