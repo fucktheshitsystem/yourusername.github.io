@@ -1,72 +1,34 @@
-let fName
-let name
-let namelength
+// Get the form element and attach a submit event listener
+const rentForm = document.getElementById('rent-form');
+rentForm.addEventListener('submit', function(event) {
+	// Prevent the default form submission behavior
+	event.preventDefault();
 
+	// Get the form data and format it as a query string
+	const formData = new FormData(rentForm);
+	const formDataString = new URLSearchParams(formData).toString();
 
-document.getElementById("Title").innerHTML = "Welcome, ..."
-document.getElementById("Title").style.fontSize = "xx-large"
-
-currentTime();
-
-function currentTime() {
-    let date = new Date(); 
-    let day = date.toDateString();
-    let hh = date.getHours();
-    let mm = date.getMinutes();
-    let ss = date.getSeconds();
-    let session = "AM";
-   
-    if(hh == 0){
-        hh = 12;
-    }
-    if(hh > 12){
-        hh = hh - 12;
-        session = "PM";
-     }
-  
-    hh = (hh < 10) ? "0" + hh : hh;
-    mm = (mm < 10) ? "0" + mm : mm;
-    ss = (ss < 10) ? "0" + ss : ss;
-      
-    let time = hh + ":" + mm + ":" + ss + " " + session;
-  
-    document.getElementById("Time").innerText = time; 
-    document.getElementById("Time").style.fontSize = "large"
-    let t = setTimeout(function(){ currentTime() }, 1000);
-
-    document.getElementById("Body").innerHTML = "Today is "+ day
-    document.getElementById("Body").style.fontSize = "large"
-}
-
-document.getElementById("submit").onclick = function(){
-
-    name = document.getElementById("textbox").value
-    let newname = name.trim()
-
-    if (name.indexOf(" ")>= 0){
-        fName = name.slice(0, name.indexOf(" "))
-        namelength = fName.length
-
-        if (namelength > 16){
-        document.getElementById("lengthcheck").innerHTML = "Name too long! No more than 16 characters!"
-        }
-        else {
-        document.getElementById("Title").innerHTML = "Welcome, " + fName     
-        }
-    }
-    else {
-        namelength = name.length  
-        if (namelength > 16){
-        document.getElementById("lengthcheck").innerHTML = "Name too long! No more than 16 characters!"
-        }
-        else {
-        document.getElementById("Title").innerHTML = "Welcome, " + name     
-        }
-    }
-    
-    if (!name == 0){
-        document.getElementById("div1").style.opacity = 0
-
-    }
-   
-}
+	// Send a POST request to the server with the form data
+	fetch('/rent', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded'
+		},
+		body: formDataString
+	})
+	.then(response => {
+		if (response.ok) {
+			// If the server responds with a 200 OK status code,
+			// display a success message to the user
+			alert('Your rental request has been sent.');
+		} else {
+			// If the server responds with an error status code,
+			// display an error message to the user
+			alert('There was an error sending your rental request.');
+		}
+	})
+	.catch(error => {
+		// If there is a network error, display an error message to the user
+		alert('There was a network error sending your rental request.');
+	});
+});
