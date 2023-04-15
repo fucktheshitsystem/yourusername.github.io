@@ -148,9 +148,16 @@ body{
     padding: 10px;
     font-size: 55px;
     cursor:pointer;
+    background-color: rgba(4, 9, 30, 0.5);
 }
 
 .rent a{
     text-decoration: none;
     color: #fff;
+}
+
+/* for Responsive stuff down here v v v */
+
+@media(max-width: 600px){
+
 }
